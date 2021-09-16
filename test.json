@@ -1,0 +1,28 @@
+{
+    "globalDuration": 0,
+    "name": "Test",
+    "track": [
+        {
+            "data": {
+                "keyframe": [
+                    {
+                        "time": 0,
+                        "value": 1
+                    },
+                    {
+                        "time": 1,
+                        "value": 3
+                    },
+                    {
+                        "time": 2,
+                        "value": -3
+                    }
+                ],
+                "node": "Box",
+                "property": "Position"
+            },
+            "trackType": "Discrete",
+            "valueType": "float"
+        }
+    ]
+}
