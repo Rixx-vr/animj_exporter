@@ -35,7 +35,7 @@ class Animation(JsonSerializable):
 
 
 class Tack(JsonSerializable):
-    def __init__(self, trackType="Discrete", valueType="float"):
+    def __init__(self, trackType="Curve", valueType="float"):
         self.trackType = trackType
         self.valueType = valueType
         self.data = None
@@ -53,9 +53,11 @@ class Data(JsonSerializable):
 
 
 class Keyframe(JsonSerializable):
-    def __init__(self, time, value):
+    def __init__(self, time, value, interpolation="Linear"):
         self.time = time
         self.value = value
+        if interpolation:
+            self.interpolation = interpolation
 
 def __create_amimation(name, objects):
     NAME = ['x', 'y', 'z', 'w']
