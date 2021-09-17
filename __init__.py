@@ -27,11 +27,11 @@ class Animation(JsonSerializable):
     def __init__(self, name, globalDuration=0):
         self.name = name
         self.globalDuration = globalDuration
-        self.track = list()
+        self.tracks = list()
 
 
     def add_track(self, track):
-        self.track.append(track)
+        self.tracks.append(track)
 
 
 class Tack(JsonSerializable):
@@ -45,17 +45,17 @@ class Data(JsonSerializable):
     def __init__(self, node, property):
         self.node = node
         self.property = property
-        self.keyframe = list()
+        self.keyframes = list()
 
 
     def add_keyframe(self, keyframe):
-        self.keyframe.append(keyframe)
+        self.keyframes.append(keyframe)
 
 
 class Keyframe(JsonSerializable):
-    def __init__(self, time, **kwargs):
+    def __init__(self, time, value):
         self.time = time
-        self.__dict__.update(kwargs)
+        self.value = value
 
 def __create_amimation(name, objects):
     NAME = ['x', 'y', 'z', 'w']
@@ -75,15 +75,17 @@ def __create_amimation(name, objects):
             track = Tack(valueType='float{}'.format(dimention))
             data = Data(obj.name_full, property)
             track.data = data
-            keyframe = {}
+
 
             for key_index in range(len(curves[i].keyframe_points)):
+                keyframe = {}
                 time = curves[i].keyframe_points[key_index].co[TIME_INDEX]
 
                 for dim_index in range(dimention):
                     keyframe[NAME[dim_index]] = curves[i + dim_index].keyframe_points[key_index].co[VALUE_INDEX]
+                    print(keyframe[NAME[dim_index]])
 
-                data.add_keyframe(Keyframe(time, **keyframe))
+                data.add_keyframe(Keyframe(time, keyframe))
             animation.add_track(track)
             i += dimention
 
@@ -112,7 +114,7 @@ class AnimJExport(bpy.types.Operator):
     bl_options = {'REGISTER', 'UNDO'}
     filename_ext = ".animj"
 
-    filter_glob     = bpy.props.StringProperty(default="*.animj", options={'HIDDEN'}, maxlen=255)
+    filter_glob = bpy.props.StringProperty(default="*.animj", options={'HIDDEN'}, maxlen=255)
     selected: bpy.props.BoolProperty(name="Selected only", description="Export selected mesh items only", default=True)
 
     filepath: bpy.props.StringProperty(subtype="FILE_PATH")
